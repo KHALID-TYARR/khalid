@@ -13,7 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Aref+Ruqaa:wght@700&family=Playfair+Display:ital,wght@1,500&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0b0907;--bg2:#15110e;--or:#ff6a00;--or2:#ff9a3d;--ink:#f4ede6;--mut:#a89c90;--ln:rgba(255,255,255,.1);--y:#ff6a00;--p:#ff6a00;--g:rgba(255,106,0,.25);--w:#f4ede6;--k:#0b0907;--bl:#ff9a3d;box-sizing:border-box;color-scheme:dark;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
-html{scroll-behavior:smooth;scroll-padding-top:calc(90px + env(safe-area-inset-top,0px));-webkit-text-size-adjust:100%;text-size-adjust:100%}
+html{scroll-padding-top:calc(90px + env(safe-area-inset-top,0px));-webkit-text-size-adjust:100%;text-size-adjust:100%}
 *{box-sizing:border-box;margin:0}
 body{background:var(--bg);color:var(--ink);font-family:'Cairo',system-ui,-apple-system,'Segoe UI',Tahoma,sans-serif;line-height:1.85;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
 body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:radial-gradient(800px 600px at 0% 0%,rgba(255,90,0,.22),transparent 70%),radial-gradient(700px 500px at 100% 55%,rgba(255,90,0,.14),transparent 70%)}
@@ -105,10 +105,11 @@ h1{font-size:clamp(3rem,8.5vw,6rem);margin:16px 0 4px}
 .note{font-size:.8rem;color:var(--mut);margin-top:10px}
 .ct{display:grid;grid-template-columns:1.1fr 1fr;gap:20px}
 textarea{width:100%;min-height:110px;border:1px solid var(--ln);background:var(--bg);color:var(--ink);border-radius:14px;padding:12px;font:inherit;resize:vertical;margin:10px 0}
-.fab{position:fixed;left:calc(16px + env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30}
+.fab{position:fixed;left:calc(16px + env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;transition:opacity .25s,transform .25s}
+.fab.hide{opacity:0;pointer-events:none;transform:translateY(24px)}
 footer{text-align:center;padding:30px 5vw 90px;color:var(--mut);border-top:1px solid var(--ln)}
 @media(max-width:800px){.hero,.ct{grid-template-columns:1fr}.hero{text-align:center}.hero p.d{margin-inline:auto}.row{justify-content:center}.ph{min-height:0;order:-1}nav ul a{padding:3px 9px;font-size:.82rem}nav .lg span{display:none}.strip{grid-template-columns:1fr}.strip div+div{border-inline-start:0;border-top:1px solid var(--ln)}}
-@media(max-width:640px){nav{padding:6px 8px 6px 12px;width:calc(100% - 6vw)}nav ul a{padding:6px 12px}nav .nt{display:none}section{padding:56px 5vw}.hero{min-height:0}.ph{min-height:0}.card{padding:18px}.chip,.tab{padding:8px 16px}}
+@media(max-width:640px){.fab{width:54px;height:54px;padding:0;justify-content:center;font-size:1.5rem;left:calc(14px + env(safe-area-inset-left,0px));bottom:calc(14px + env(safe-area-inset-bottom,0px))}.fab span{display:none}footer{padding-bottom:calc(90px + env(safe-area-inset-bottom,0px))}nav{padding:6px 8px 6px 12px;width:calc(100% - 6vw)}nav ul a{padding:6px 12px}nav .nt{display:none}section{padding:56px 5vw}.hero{min-height:0}.ph{min-height:0}.card{padding:18px}.chip,.tab{padding:8px 16px}}
 [dir=ltr] .ar{font-family:'Playfair Display',serif;font-style:italic;font-weight:500}
 [dir=ltr] .node{text-align:left}
 #lng{font-weight:700}
@@ -152,7 +153,8 @@ footer{text-align:center;padding:30px 5vw 90px;color:var(--mut);border-top:1px s
 #pitch{display:inline-block;transition:opacity .25s;border-inline-end:3px solid var(--or);padding-inline-end:10px}
 .plain{display:block;border-inline-start:3px solid var(--or);padding:2px 12px;margin:0 0 20px;color:var(--or2);font-weight:600}
 .hl{display:block;font-style:normal;font-weight:900;color:var(--or2);font-size:1.1rem;line-height:1.5}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+@media(hover:hover) and (pointer:fine){html{scroll-behavior:smooth}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
@@ -227,7 +229,7 @@ footer{text-align:center;padding:30px 5vw 90px;color:var(--mut);border-top:1px s
  </div>
 </section>
 <footer>خالد فخر الدين · السعودية</footer>
-<a class="btn pk fab" id="fab" target="_blank" rel="noopener">💬 كلمني</a>
+<a class="btn pk fab" id="fab" target="_blank" rel="noopener" aria-label="WhatsApp">💬 <span>كلمني</span></a>
 
 <script>
 const CFG={phone:"966572306106",email:"altyarr990@gmail.com"}; // ضع رقمك بصيغة 9665xxxxxxxx وإيميلك هنا / put your number (9665xxxxxxxx) and email here
@@ -346,8 +348,9 @@ function walk(){const w=document.createTreeWalker(document.body,NodeFilter.SHOW_
  L.forEach(n=>{if(lang==='en'){const o=orig.has(n)?orig.get(n):n.nodeValue,t=o.trim();if(!t)return;const r=look(t);if(r!==null){orig.set(n,o);n.nodeValue=o.replace(t,r)}}else if(orig.has(n)){n.nodeValue=orig.get(n);orig.delete(n)}})}
 function setLang(l){lang=l;const h=document.documentElement;h.lang=l;h.dir=l==='en'?'ltr':'rtl';document.title=l==='en'?'Khaled Fakhr Al-Din | Creative & Data Analyst: Selling Is My Game':'خالد فخر الدين | كرييتيف ومحلل بيانات: البيع لعبتي';$('#lng').textContent=l==='en'?'عربي':'EN';$('#msg').placeholder=P(...PH);$('#res').innerHTML=`<div class="empty">${P('اختر نشاطك وتحديك، وشوف وش يطلع.','Pick your business and challenge, and see what comes out.')}</div>`;walk();render()}
 $('#lng').onclick=()=>setLang(lang==='en'?'ar':'en');
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)$$('nav ul a').forEach(a=>{const on=a.getAttribute('href')==='#'+e.target.id;a.classList.toggle('on',on);if(on)a.scrollIntoView({inline:'center',block:'nearest'})})}),{rootMargin:'-45% 0px -50% 0px'});
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)$$('nav ul a').forEach(a=>{const on=a.getAttribute('href')==='#'+e.target.id;a.classList.toggle('on',on);if(on&&!a._on){const u=a.closest('ul'),ar=a.getBoundingClientRect(),ur=u.getBoundingClientRect();u.scrollBy({left:(ar.left+ar.width/2)-(ur.left+ur.width/2),behavior:'auto'})}a._on=on})}),{rootMargin:'-45% 0px -50% 0px'});
 ['about','idea','skills','systems','work'].forEach(i=>io.observe($('#'+i)));
+const fio=new IntersectionObserver(es=>{es.forEach(e=>e.target._v=e.isIntersecting);$('#fab').classList.toggle('hide',['talk'].some(i=>$('#'+i)._v))},{threshold:.35});fio.observe($('#talk'));
 render();
 </script>
 
